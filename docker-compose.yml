@@ -1,0 +1,41 @@
+version: "3"
+services:
+  management:
+    image: rabbitmq:3-management
+    environment:
+      - RABBITMQ_ERLANG_COOKIE='secret cookie here'
+      - RABBITMQ_DEFAULT_USER=myuser
+      - RABBITMQ_DEFAULT_PASS=mypass
+    ports:
+      - "5673:5672"
+      - "15672:15672"
+    networks:
+      - rabbitmq
+  mqtt1:
+    build:
+      context: server/
+    environment:
+      - RABBITMQ_ERLANG_COOKIE='secret cookie here'
+      - RABBITMQ_DEFAULT_USER=myuser
+      - RABBITMQ_DEFAULT_PASS=mypass
+    ports:
+      - "5674:5672"
+      - "15673:15672"
+    networks:
+      - rabbitmq
+  mqtt2:
+    build:
+      context: server/
+    environment:
+      - RABBITMQ_ERLANG_COOKIE='secret cookie here'
+      - RABBITMQ_DEFAULT_USER=myuser
+      - RABBITMQ_DEFAULT_PASS=mypass
+    ports:
+      - "5675:5672"
+      - "15674:15672"
+    networks:
+      - rabbitmq
+
+networks:
+  rabbitmq:
+    driver: bridge
